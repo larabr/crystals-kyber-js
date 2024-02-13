@@ -2,11 +2,27 @@
   "version": "3",
   "packages": {
     "specifiers": {
-      "npm:@noble/hashes@1.3.3": "npm:@noble/hashes@1.3.3"
+      "npm:@noble/hashes@1.3.3": "npm:@noble/hashes@1.3.3",
+      "npm:bcrypto@5.5.2": "npm:bcrypto@5.5.2"
     },
     "npm": {
       "@noble/hashes@1.3.3": {
         "integrity": "sha512-V7/fPHgl+jsVPXqqeOzT8egNj2iBIVt+ECeMMG8TdcnTikP3oaBtUVqpT/gYCR68aEBJSF+XbYUxStjbFMqIIA==",
+        "dependencies": {}
+      },
+      "bcrypto@5.5.2": {
+        "integrity": "sha512-k3PF755oJM0+25iOVuraNedF5XneykxRwl+oBoMeQPfYee4qX8hHQhKCsNZWLthNYgi41GH2ysopd/8sDQDhEw==",
+        "dependencies": {
+          "bufio": "bufio@1.0.7",
+          "loady": "loady@0.0.5"
+        }
+      },
+      "bufio@1.0.7": {
+        "integrity": "sha512-bd1dDQhiC+bEbEfg56IdBv7faWa6OipMs/AFFFvtFnB3wAYjlwQpQRZ0pm6ZkgtfL0pILRXhKxOiQj6UzoMR7A==",
+        "dependencies": {}
+      },
+      "loady@0.0.5": {
+        "integrity": "sha512-uxKD2HIj042/HBx77NBcmEPsD+hxCgAtjEWlYNScuUjIsh/62Uyu39GOR68TBR68v+jqDL9zfftCWoUo4y03sQ==",
         "dependencies": {}
       }
     }
