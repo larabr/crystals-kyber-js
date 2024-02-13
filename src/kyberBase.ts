@@ -17,6 +17,7 @@ import {
   byte,
   byteopsLoad32,
   constantTimeCompare,
+  equalUint8Array,
   int16,
   int32,
   loadCrypto,
@@ -170,10 +171,13 @@ export class KyberBase {
     await this._setup();
 
     try {
-      const m = h(this._getSeed(seed));
-      const [kBar, r] = g(m, h(pk));
+      // validate key type; the modulo is checked in `_encap`.
+      if (pk.length !== 384 * this._k + 32) {
+        throw new Error("invalid encapsulation key");
+      }
+      const m = this._getSeed(seed);
+      const [k, r] = g(m, h(pk));
       const ct = this._encap(pk, m, r);
-      const k = kdf(kBar, h(ct));
       return [ct, k];
     } catch (e: unknown) {
       throw new KyberError(e);
@@ -207,12 +211,17 @@ export class KyberBase {
     await this._setup();
 
     try {
+      // ciphertext type check
       if (ct.byteLength !== this._compressedUSize + this._compressedVSize) {
         throw new Error("Invalid ct size");
       }
+      // decapsulation key type check
+      if (sk.length !== 768 * this._k + 96) {
+        throw new Error("Invalid decapsulation key");
+      }
       const sk2 = sk.subarray(0, this._skSize);
       const pk = sk.subarray(this._skSize, this._skSize + this._pkSize);
-      const p = sk.subarray(
+      const hpk = sk.subarray(
         this._skSize + this._pkSize,
         this._skSize + this._pkSize + 32,
       );
@@ -222,12 +231,10 @@ export class KyberBase {
       );
 
       const m2 = this._decap(ct, sk2);
-      const [kBar2, r2] = g(m2, p);
+      const [k2, r2] = g(m2, hpk);
+      const kBar = kdf(z, ct);
       const ct2 = this._encap(pk, m2, r2);
-      if (constantTimeCompare(ct, ct2) == 1) {
-        return kdf(kBar2, h(ct));
-      }
-      return kdf(z, h(ct));
+      return constantTimeCompare(ct, ct2) === 1 ? k2 : kBar;
     } catch (e: unknown) {
       throw new KyberError(e);
     }
@@ -353,8 +360,13 @@ export class KyberBase {
     seed: Uint8Array,
   ): Uint8Array {
     const tHat = new Array<Array<number>>(this._k);
+    const pkCheck = new Uint8Array(384 * this._k); // to validate the pk modulo (see input validation at NIST draft 6.2)
     for (let i = 0; i < this._k; i++) {
       tHat[i] = polyFromBytes(pk.subarray(i * 384, (i + 1) * 384));
+      pkCheck.set(polyToBytes(tHat[i]), i * 384);
+    }
+    if (!equalUint8Array(pk.subarray(0, pkCheck.length), pkCheck)) {
+      throw new Error("invalid encapsulation key");
     }
     const rho = pk.subarray(this._skSize);
     const a = this._sampleMatrix(rho, true);

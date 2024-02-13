@@ -51,7 +51,10 @@ export function uint32(n: number): number {
   return n % 4294967296;
 }
 
-// compares two arrays and returns 1 if they are the same or 0 if not
+/**
+ * compares two arrays
+ * @returns 1 if they are the same or 0 if not
+ */
 export function constantTimeCompare(x: Uint8Array, y: Uint8Array): number {
   // check array lengths
   if (x.length != y.length) {
@@ -68,6 +71,18 @@ export function constantTimeCompare(x: Uint8Array, y: Uint8Array): number {
   z[0] &= z[0] >> 2;
   z[0] &= z[0] >> 1;
   return z[0];
+}
+
+export function equalUint8Array(x: Uint8Array, y: Uint8Array) {
+  if (x.length != y.length) {
+    return false;
+  }
+  for (let i = 0; i < x.length; i++) {
+    if (x[i] !== y[i]) {
+      return false;
+    }
+  }
+  return true;
 }
 
 export async function loadCrypto(): Promise<Crypto> {
