@@ -1,23 +1,33 @@
-import { assertEquals } from "testing/asserts.ts";
 import { describe, it } from "testing/bdd.ts";
+import {
+  assertEquals,
+  assertRejects,
+} from "https://deno.land/std@0.216.0/assert/mod.ts";
 
-import { Kyber1024, Kyber512, Kyber768 } from "../mod.ts";
+import { Kyber1024, Kyber512, Kyber768, KyberError } from "../mod.ts";
 import { loadCrypto } from "../src/utils.ts";
 import { parseKAT, testVectorPath } from "./utils.ts";
+import { hexToBytes } from "./utils.ts";
 
-[Kyber512, Kyber768, Kyber1024].forEach(KyberClass => describe(KyberClass.name, () => {
-  describe("KAT vectors", () => {
-    it("should match expected values", async () => {
-      const kyber = new KyberClass();
-      const katData = await Deno.readTextFile(
-        `${testVectorPath()}/kat_MLKEM_${KyberClass.name.substring(5)}.rsp`,
-      );
-      const { ct, sk, ss } = parseKAT(katData);
-      console.log(`test vector count: ${sk.length}`);
+[Kyber512, Kyber768, Kyber1024].forEach((KyberClass) =>
+  describe(KyberClass.name, () => {
+    const size = KyberClass.name.substring(5);
+    describe("KAT vectors", () => {
+      it("should match expected values", async () => {
+        const kyber = new KyberClass();
+        const katData = await Deno.readTextFile(
+          `${testVectorPath()}/kat/kat_MLKEM_${size}.rsp`,
+        );
+        const { ct, sk, ss, msg, pk } = parseKAT(katData);
+        console.log(`test vector count: ${sk.length}`);
 
         for (let i = 0; i < sk.length; i++) {
-          const res = await kyber.decap(ct[i], sk[i]);
-          assertEquals(res, ss[i]);
+          const ssDecapActual = await kyber.decap(ct[i], sk[i]);
+          assertEquals(ssDecapActual, ss[i]);
+
+          const [ctActual, ssEncapActual] = await kyber.encap(pk[i], msg[i]);
+          assertEquals(ctActual, ct[i]);
+          assertEquals(ssEncapActual, ss[i]);
         }
       });
     });
@@ -53,5 +63,30 @@ import { parseKAT, testVectorPath } from "./utils.ts";
         assertEquals(ssS, ssR);
       });
     });
-  });
-}));
+
+    describe("Advanced testing", () => {
+      it("Invalid encapsulation keys", async () => {
+        const sender = new KyberClass();
+        const testData = await Deno.readTextFile(
+          `${testVectorPath()}/modulus/ML-KEM-${size}.txt`,
+        );
+        const invalidPk = hexToBytes(testData);
+        await assertRejects(
+          () => sender.encap(invalidPk),
+          KyberError,
+          "invalid encapsulation key",
+        );
+      });
+
+      it("'Unlucky' vectors that require an unusually large number of XOF reads", async () => {
+        const kyber = new KyberClass();
+        const testData = await Deno.readTextFile(
+          `${testVectorPath()}/unluckysample/ML-KEM-${size}.txt`,
+        );
+        const { c: [ct], dk: [sk], K: [ss] } = parseKAT(testData);
+        const res = await kyber.decap(ct, sk);
+        assertEquals(res, ss);
+      });
+    });
+  })
+);
