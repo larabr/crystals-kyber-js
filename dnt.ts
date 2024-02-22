@@ -8,7 +8,7 @@ await build({
   typeCheck: "both",
   test: true,
   declaration: "inline",
-  scriptModule: "umd",
+  scriptModule: false, // no commmonJS output
   importMap: "./deno.json",
   compilerOptions: {
     lib: ["ES2022", "DOM"],
@@ -34,9 +34,7 @@ await build({
     exports: {
       ".": {
         "import": "./esm/mod.js",
-        "require": "./script/mod.js",
       },
-      "./package.json": "./package.json",
     },
     keywords: [
       "crystals-kyber",
