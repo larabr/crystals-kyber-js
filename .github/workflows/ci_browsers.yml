@@ -10,41 +10,16 @@ permissions:
   contents: read
 
 jobs:
-  pages:
+  playwright-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: 18.x
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
       - run: |
-          npm install -g typescript
-          npm install -g typedoc
-          # npx typedoc --name "crystals-kyber-js $(git describe --tags --abbrev=0)" --out pages/docs/main mod.ts
-          npx typedoc --name "API reference for crystals-kyber-js/main" --out pages/docs/main mod.ts
-          npm install -g esbuild
-          deno task dnt
-          deno task minify > test/runtimes/browsers/pages/src/crystals-kyber.js
-          mkdir pages/tests
-          cp -rf test/runtimes/browsers/pages/* pages/tests
-      - uses: peaceiris/actions-gh-pages@v3
-        with:
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./pages
-
-  playwright-test:
-    needs: pages
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-      - uses: microsoft/playwright-github-action@v1
-      - working-directory: ./test/runtimes/browsers
-        run: |
-          npm install
-          npx playwright install-deps
-          npx playwright install
-          npx playwright test
+          npx playwright install --with-deps chromium
+          npx playwright install --with-deps firefox
+          npx playwright install --with-deps webkit
+          deno task test-browser
