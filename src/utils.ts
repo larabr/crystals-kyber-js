@@ -1,5 +1,4 @@
-// @ts-ignore: for "npm:"
-import { shake256 } from "npm:@openpgp/noble-hashes@1.3.3/sha3";
+import { shake256 } from "./deps.ts";
 
 export function byte(n: number): number {
   return n % 256;
