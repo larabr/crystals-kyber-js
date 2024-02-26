@@ -4,12 +4,12 @@ import {
   assertRejects,
 } from "https://deno.land/std@0.216.0/assert/mod.ts";
 
-import { Kyber1024, Kyber512, Kyber768, KyberError } from "../mod.ts";
+import { MlKem1024, MlKem512, MlKem768, MlKemError } from "../mod.ts";
 import { loadCrypto } from "../src/utils.ts";
 import { parseKAT, testVectorPath } from "./utils.ts";
 import { hexToBytes } from "./utils.ts";
 
-[Kyber512, Kyber768, Kyber1024].forEach((KyberClass) =>
+[MlKem512, MlKem768, MlKem1024].forEach((KyberClass) =>
   describe(KyberClass.name, () => {
     const size = KyberClass.name.substring(5);
     describe("KAT vectors", () => {
@@ -73,7 +73,7 @@ import { hexToBytes } from "./utils.ts";
         const invalidPk = hexToBytes(testData);
         await assertRejects(
           () => sender.encap(invalidPk),
-          KyberError,
+          MlKemError,
           "invalid encapsulation key",
         );
       });

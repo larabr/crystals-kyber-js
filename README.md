@@ -45,11 +45,11 @@ npm install crystals-kyber-js
 Then, you can use it as follows:
 
 ```js
-import { Kyber768 } from "crystals-kyber-js";
+import { MlKem768 } from "crystals-kyber-js";
 
 async function doKyber() {
   // A recipient generates a key pair.
-  const recipient = new Kyber768(); // Kyber512 and Kyber1024 are also available.
+  const recipient = new MlKem768(); // MlKem512 and MlKem1024 are also available.
   const [pkR, skR] = await recipient.generateKeyPair();
   //// Deterministic key generation is also supported
   // const seed = new Uint8Array(64);
@@ -57,7 +57,7 @@ async function doKyber() {
   // const [pkR, skR] = await recipient.deriveKeyPair(seed);
 
   // A sender generates a ciphertext and a shared secret with pkR.
-  const sender = new Kyber768();
+  const sender = new MlKem768();
   const [ct, ssS] = await sender.encap(pkR);
 
   // The recipient decapsulates the ciphertext and generates the same shared secret with skR.
@@ -106,10 +106,10 @@ Using deno.land:
 
 ```js
 // use a specific version
-import { Kyber768 } from "https://deno.land/x/crystals_kyber@1.1.1/mod.ts";
+import { MlKem768 } from "https://deno.land/x/crystals_kyber@1.1.1/mod.ts";
 
 // use the latest stable version
-import { Kyber768 } from "https://deno.land/x/crystals_kyber/mod.ts";
+import { MlKem768 } from "https://deno.land/x/crystals_kyber/mod.ts";
 ```
 
 ### Web Browsers
@@ -122,13 +122,13 @@ Using esm.sh:
 ```html
 <!-- use a specific version -->
 <script type="module">
-  import { Kyber768 } from "https://esm.sh/crystals-kyber-js@1.1.1";
+  import { MlKem768 } from "https://esm.sh/crystals-kyber-js@1.1.1";
   // ...
 </script>
 
 <!-- use the latest stable version -->
 <script type="module">
-  import { Kyber768 } from "https://esm.sh/crystals-kyber-js";
+  import { MlKem768 } from "https://esm.sh/crystals-kyber-js";
   // ...
 </script>
 ```
@@ -138,7 +138,7 @@ Using unpkg:
 ```html
 <!-- use a specific version -->
 <script type="module">
-  import { Kyber768 } from "https://unpkg.com/crystals-kyber-js@1.1.1";
+  import { MlKem768 } from "https://unpkg.com/crystals-kyber-js@1.1.1";
   // ...
 </script>
 ```
@@ -160,14 +160,14 @@ This section shows some typical usage examples.
 ### Node.js
 
 ```js
-import { Kyber768 } from "crystals-kyber-js";
-// const { Kyber768 } = require("crystals-kyber-js");
+import { MlKem768 } from "crystals-kyber-js";
+// const { MlKem768 } = require("crystals-kyber-js");
 
 async function doKyber() {
-  const recipient = new Kyber768();
+  const recipient = new MlKem768();
   const [pkR, skR] = await recipient.generateKeyPair();
 
-  const sender = new Kyber768();
+  const sender = new MlKem768();
   const [ct, ssS] = await sender.encap(pkR);
 
   const ssR = await recipient.decap(ct, skR);
@@ -186,14 +186,14 @@ try {
 ### Deno
 
 ```js
-import { Kyber512 } from "https://deno.land/x/crystals_kyber@1.1.1/mod.ts";
+import { MlKem512 } from "https://deno.land/x/crystals_kyber@1.1.1/mod.ts";
 
 async function doKyber() {
 
-  const recipient = new Kyber512();
+  const recipient = new MlKem512();
   const [pkR, skR] = await recipient.generateKeyPair();
 
-  const sender = new Kyber512();
+  const sender = new MlKem512();
   const [ct, ssS] = await sender.encap(pkR);
 
   const ssR = await recipient.decap(ct, skR);
@@ -216,14 +216,14 @@ try {
   <head></head>
   <body>
     <script type="module">
-      import { Kyber1024 } from "https://esm.sh/crystals-kyber@1.1.1";
+      import { MlKem1024 } from "https://esm.sh/crystals-kyber@1.1.1";
 
       globalThis.doKyber = async () => {
         try {
-          const recipient = new Kyber1024();
+          const recipient = new MlKem1024();
           const [pkR, skR] = await recipient.generateKeyPair();
 
-          const sender = new Kyber1024();
+          const sender = new MlKem1024();
           const [ct, ssS] = await sender.encap(pkR);
 
           const ssR = await recipient.decap(ct, skR);

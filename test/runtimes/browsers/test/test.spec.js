@@ -1,8 +1,8 @@
 import { expect } from "@esm-bundle/chai";
-import { Kyber1024, Kyber512, Kyber768 } from "crystals-kyber";
+import { MlKem1024, MlKem512, MlKem768 } from "crystals-kyber";
 
 describe("Browser basic tests", () => {
-  [Kyber512, Kyber768, Kyber1024].forEach((KyberClass) =>
+  [MlKem512, MlKem768, MlKem1024].forEach((KyberClass) =>
     it("key generation and roundtrip", async () => {
       const kyber = new KyberClass();
       const [pkR, skR] = await kyber.generateKeyPair();
