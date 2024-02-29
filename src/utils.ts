@@ -85,7 +85,7 @@ export function equalUint8Array(x: Uint8Array, y: Uint8Array) {
 }
 
 export async function loadCrypto(): Promise<Crypto> {
-  if (globalThis !== undefined && globalThis.crypto !== undefined) {
+  if (typeof globalThis !== 'undefined' && globalThis.crypto !== undefined) {
     // Browsers, Node.js >= v19, Cloudflare Workers, Bun, etc.
     return globalThis.crypto;
   }
