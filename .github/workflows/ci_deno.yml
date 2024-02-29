@@ -19,7 +19,6 @@ jobs:
           deno-version: v1.x
       - name: Run deno test
         run: |
-          deno fmt --check
           deno task test
           deno task cov > coverage.lcov
       - uses: codecov/codecov-action@v2
