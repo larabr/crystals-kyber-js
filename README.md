@@ -1,5 +1,11 @@
 <h1 align="center">crystals-kyber-js</h1>
 
+> This fork adds support for legacy browsers without BigInt (e.g. Safari 13 or less), and it implements the ML-KEM changes from the [NIST FIPS-203 (draft)](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.ipd.pdf): it exports `MlKem512, 768, 1024` instead of `Kyber512, 768, 1024`.<br>
+This library is published on npm (as `@openpgp/crystals-kyber-js`) but not on deno.
+We recommend you use the upstream repo. The rest of the README refers to the upstream library.
+
+<hr>
+
 <div align="center">
 
 [![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/crystals_kyber/mod.ts)
@@ -45,11 +51,11 @@ npm install crystals-kyber-js
 Then, you can use it as follows:
 
 ```js
-import { MlKem768 } from "crystals-kyber-js";
+import { Kyber768 } from "crystals-kyber-js";
 
 async function doKyber() {
   // A recipient generates a key pair.
-  const recipient = new MlKem768(); // MlKem512 and MlKem1024 are also available.
+  const recipient = new Kyber768(); // MlKem512 and MlKem1024 are also available.
   const [pkR, skR] = await recipient.generateKeyPair();
   //// Deterministic key generation is also supported
   // const seed = new Uint8Array(64);
@@ -57,7 +63,7 @@ async function doKyber() {
   // const [pkR, skR] = await recipient.deriveKeyPair(seed);
 
   // A sender generates a ciphertext and a shared secret with pkR.
-  const sender = new MlKem768();
+  const sender = new Kyber768();
   const [ct, ssS] = await sender.encap(pkR);
 
   // The recipient decapsulates the ciphertext and generates the same shared secret with skR.
@@ -106,10 +112,10 @@ Using deno.land:
 
 ```js
 // use a specific version
-import { MlKem768 } from "https://deno.land/x/crystals_kyber@1.1.1/mod.ts";
+import { Kyber768 } from "https://deno.land/x/crystals_kyber@1.1.1/mod.ts";
 
 // use the latest stable version
-import { MlKem768 } from "https://deno.land/x/crystals_kyber/mod.ts";
+import { Kyber768 } from "https://deno.land/x/crystals_kyber/mod.ts";
 ```
 
 ### Web Browsers
@@ -122,13 +128,13 @@ Using esm.sh:
 ```html
 <!-- use a specific version -->
 <script type="module">
-  import { MlKem768 } from "https://esm.sh/crystals-kyber-js@1.1.1";
+  import { Kyber768 } from "https://esm.sh/crystals-kyber-js@1.1.1";
   // ...
 </script>
 
 <!-- use the latest stable version -->
 <script type="module">
-  import { MlKem768 } from "https://esm.sh/crystals-kyber-js";
+  import { Kyber768 } from "https://esm.sh/crystals-kyber-js";
   // ...
 </script>
 ```
@@ -138,7 +144,7 @@ Using unpkg:
 ```html
 <!-- use a specific version -->
 <script type="module">
-  import { MlKem768 } from "https://unpkg.com/crystals-kyber-js@1.1.1";
+  import { Kyber768 } from "https://unpkg.com/crystals-kyber-js@1.1.1";
   // ...
 </script>
 ```
@@ -160,14 +166,14 @@ This section shows some typical usage examples.
 ### Node.js
 
 ```js
-import { MlKem768 } from "crystals-kyber-js";
-// const { MlKem768 } = require("crystals-kyber-js");
+import { Kyber768 } from "crystals-kyber-js";
+// const { Kyber768 } = require("crystals-kyber-js");
 
 async function doKyber() {
-  const recipient = new MlKem768();
+  const recipient = new Kyber768();
   const [pkR, skR] = await recipient.generateKeyPair();
 
-  const sender = new MlKem768();
+  const sender = new Kyber768();
   const [ct, ssS] = await sender.encap(pkR);
 
   const ssR = await recipient.decap(ct, skR);

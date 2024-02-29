@@ -17,18 +17,17 @@ await build({
     deno: "dev",
   },
   package: {
-    name: "crystals-kyber-js",
-    version: Deno.args[0],
+    name: "@openpgp/crystals-kyber-js",
+    version: Deno.args[0]?.replace(/^@openpgp\//, ""),
     description:
-      "A CRYSTALS-KYBER implementation written in TypeScript for various JavaScript runtimes",
+      "A ML-KEM implementation written in TypeScript",
     repository: {
       type: "git",
-      url: "git+https://github.com/dajiaji/crystals-kyber-js.git",
+      url: "git+https://github.com/openpgpjs/crystals-kyber-js.git",
     },
-    homepage: "https://github.com/dajiaji/crystals-kyber-js#readme",
+    homepage: "https://github.com/openpgpjs/crystals-kyber-js#readme",
     license: "MIT",
     module: "./esm/mod.js",
-    main: "./script/mod.js",
     types: "./esm/mod.d.ts",
     sideEffects: false,
     exports: {
@@ -39,6 +38,7 @@ await build({
     keywords: [
       "crystals-kyber",
       "kyber",
+      "ml-kem",
       "kem",
       "security",
       "encryption",
@@ -50,7 +50,7 @@ await build({
     },
     author: "Ajitomi Daisuke",
     bugs: {
-      url: "https://github.com/dajiaji/crystals-kyber-js/issues",
+      url: "https://github.com/openpgpjs/crystals-kyber-js/issues",
     },
   },
 });
