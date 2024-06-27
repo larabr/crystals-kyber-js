@@ -23,9 +23,9 @@ export default {
       capabilities: {
         ...sharedCapabilities,
         browserName: "Safari",
-        browser_version: "13.1", // no BigInt support
+        browser_version: "14", // min supported version
         os: "OS X",
-        os_version: "Catalina",
+        os_version: "Big Sur",
       },
     }),
   ],

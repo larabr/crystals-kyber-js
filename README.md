@@ -1,6 +1,6 @@
 <h1 align="center">crystals-kyber-js</h1>
 
-> This fork adds support for legacy browsers without BigInt (e.g. Safari 13 or less), and it implements the ML-KEM changes from the [NIST FIPS-203 (draft)](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.ipd.pdf): it exports `MlKem512, 768, 1024` instead of `Kyber512, 768, 1024`.<br>
+> This fork implements the ML-KEM changes from the [NIST FIPS-203 (draft)](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.ipd.pdf): it exports `MlKem512, 768, 1024` instead of `Kyber512, 768, 1024`.<br>
 This library is published on npm (as `@openpgp/crystals-kyber-js`) but not on deno.
 We recommend you use the upstream repo. The rest of the README refers to the upstream library.
 
