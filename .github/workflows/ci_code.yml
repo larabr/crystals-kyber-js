@@ -30,7 +30,7 @@ jobs:
   node:
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x]
+        node-version: [18.x, 20.x]
 
     name: Node ${{ matrix.node-version }}
     runs-on: ubuntu-latest

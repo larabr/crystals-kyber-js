@@ -46,7 +46,7 @@ await build({
       "post-quantum",
     ],
     engines: {
-      "node": ">=16.0.0",
+      "node": ">=18.0.0",
     },
     author: "Ajitomi Daisuke",
     bugs: {
